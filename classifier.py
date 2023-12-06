@@ -3,7 +3,8 @@ import numpy as np
 import sklearn.discriminant_analysis
 from sklearn.neighbors import KNeighborsClassifier as kn
 from sklearn.naive_bayes import GaussianNB as nb
-
+DFLT_ATTRS = 4
+DFLT_DATA = 1000
 
 class Classifier:
 
@@ -11,17 +12,26 @@ class Classifier:
 	# Assume first column is class id (binary only for now)
 	# @param	[test_data_csv]		comma-separated testing data
 	# @param	[train_data_csv]	comma-separated training data
-	def __init__(self, test_data_csv, train_data_csv):
-		# we'll limit attributes to 4 and data size to 1000
-		self.limits = [4,1000]
+	# @param	[attribute_limit]	maximum attributes to process
+	# @param	[data_limit]		maximum dataset to process
+	def __init__(self, test_data_csv, train_data_csv, attribute_limit=0, data_limit=0):
 		self.test_data_raw = np.genfromtxt(test_data_csv, delimiter=',')
 		self.train_data_raw = np.genfromtxt(train_data_csv, delimiter=',')
+
+		# set default attributes if not provided
+		if attribute_limit <= 0:
+			attribute_limit = DFLT_ATTRS
+		if data_limit <= 0:
+			data_limit = DFLT_DATA
+		self.limits = [attribute_limit, data_limit]
+
+		# other class variables to use
 		self.test_x = []
 		self.test_expect = []
 		self.test_y = {
 						"lda":[],	# Linear Discriminant
 						"near": [],	# Nearest Neighbor
-						"bayes": [] # Naive Bayes
+						"bayes": []  	# Naive Bayes
 			      }
 		self.train_x = []
 		self.train_y = []
@@ -109,5 +119,5 @@ class Classifier:
 		return
 
 # Main
-c = Classifier("dota2Test.csv", "dota2Train.csv")
+c = Classifier("dota2Test.csv", "dota2Train.csv", 7, 1000)
 c.classify()
