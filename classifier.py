@@ -1,6 +1,8 @@
 # Classifier class that uses sklearn to work on a well defined dataset and compare two classifier algorithms
 import numpy as np
 import sklearn.discriminant_analysis
+from sklearn.neighbors import KNeighborsClassifier as kn
+from sklearn.naive_bayes import GaussianNB as nb
 
 
 class Classifier:
@@ -16,7 +18,11 @@ class Classifier:
 		self.train_data_raw = np.genfromtxt(train_data_csv, delimiter=',')
 		self.test_x = []
 		self.test_expect = []
-		self.test_y = {"lda":[]}
+		self.test_y = {
+						"lda":[],	# Linear Discriminant
+						"near": [],	# Nearest Neighbor
+						"bayes": [] # Naive Bayes
+			      }
 		self.train_x = []
 		self.train_y = []
 
@@ -82,6 +88,25 @@ class Classifier:
 		self.test_y["lda"] = self.lda.predict(self.test_x)
 		return
 
+	# Nearest Neighbor
+	def near_train(self):
+		self.near = kn(n_neighbors=3)
+		self.near.fit(self.train_x, self.train_y)
+		return
+
+	def near_predict(self):
+		self.test_y["near"] = self.near.predict(self.test_x)
+		return
+
+	# Naive Bayes
+	def bayes_train(self):
+		self.bayes = nb()
+		self.bayes.fit(self.train_x, self.train_y)
+		return
+
+	def bayes_predict(self):
+		self.test_y["bayes"] = self.bayes.predict(self.test_x)
+		return
 
 # Main
 c = Classifier("dota2Test.csv", "dota2Train.csv")
