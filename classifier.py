@@ -24,6 +24,8 @@ class Classifier:
                         attribute_limit = DFLT_ATTRS
                 if data_limit <= 0:
                         data_limit = DFLT_DATA
+                if test_limit <= 0:
+                        test_limit = DFLT_DATA
                 self.limits = [attribute_limit, data_limit, test_limit]
 
                 # other class variables to use
