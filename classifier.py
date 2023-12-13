@@ -14,7 +14,8 @@ class Classifier:
         # @param        [test_data_csv]         comma-separated testing data
         # @param        [train_data_csv]        comma-separated training data
         # @param        [attribute_limit]       maximum attributes to process
-        # @param        [data_limit]            maximum dataset to process
+        # @param        [data_limit]            maximum training dataset to process
+        # @param        [test_limit]            maximum testing dataset to process
         def __init__(self, test_data_csv, train_data_csv, attribute_limit=0, data_limit=0, test_limit = 0):
                 self.test_data_raw = np.genfromtxt(test_data_csv, delimiter=',')
                 self.train_data_raw = np.genfromtxt(train_data_csv, delimiter=',')
