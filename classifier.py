@@ -1,4 +1,4 @@
-# Classifier class that uses sklearn to work on a well defined dataset and compare two classifier algorithms
+# Classifier that uses sklearn to work on a well defined dataset and compare classifier algorithms
 import numpy as np
 import sklearn.discriminant_analysis
 import time
@@ -6,6 +6,10 @@ from sklearn.neighbors import KNeighborsClassifier as kn
 from sklearn.naive_bayes import GaussianNB as nb
 DFLT_ATTRS = 4
 DFLT_DATA = 1000
+TRAINING_SIZE = 35000
+# 25% of Training Size
+TEST_SIZE = 8750 
+
 
 class Classifier:
 
@@ -42,8 +46,9 @@ class Classifier:
 
         # Convert data into results and attributes
         #
-        # @param        [data]                  numpy array with data
-        # @return       [outx, outy]    numpy arrays with limited data and results
+        # @param        [data]              numpy array with data
+        # @param        [is_test]           which limits to use for data (test or train)
+        # @return       [outx, outy]        numpy arrays with limited data and results
         def __convert_data(self, data, is_test):
                 outx = []
                 outy = []
@@ -100,7 +105,9 @@ class Classifier:
                         output[alg_id] = self.get_results(alg_id, batch_mode)
                 return output
 
-        # Compare prediction with expected results of classification and print results
+        # Compare prediction with expected results of classification
+        # generates confusion matrix and print results if not in batch mode
+        #
         # @param        [alg_id]        String id for algorithm from self.test_y
         # @param        [batch_mode]    Bool to enable/disable printing results
         # @return       [output]        Error Results for each algorithm
@@ -168,8 +175,6 @@ class Classifier:
                 return
 
 # Main
-TRAINING_SIZE = 35000
-TEST_SIZE = 8750 # 25% of Training Size
 
 # Run Once
 c = Classifier("dota2Test.csv", "dota2Train.csv", 7, TRAINING_SIZE, TEST_SIZE)
@@ -178,10 +183,14 @@ c.classify(False)
 
 # Feature Selection Output. 
 # Runs in Batch Mode Tries to Use Sequential Forward Generation
-output = []
-for i in range(10):
-    c = Classifier("dota2Test.csv", "dota2Train.csv", i+1, TRAINING_SIZE, TEST_SIZE)
-    output.append(c.classify(True))
+def feature_select():
+    output = []
+    for i in range(10):
+        c = Classifier("dota2Test.csv", "dota2Train.csv", i+1, TRAINING_SIZE, TEST_SIZE)
+        output.append(c.classify(True))
 
-for elem in output:
-    print(elem)
+    for elem in output:
+        print(elem)
+
+# Uncomment for additional results 
+# feature_select()
