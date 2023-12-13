@@ -9,6 +9,7 @@ DFLT_DATA = 1000
 TRAINING_SIZE = 35000
 # 25% of Training Size
 TEST_SIZE = 8750 
+ATTRIBUTE_COUNT = 7
 
 
 class Classifier:
@@ -177,7 +178,7 @@ class Classifier:
 # Main
 
 # Run Once
-c = Classifier("dota2Test.csv", "dota2Train.csv", 7, TRAINING_SIZE, TEST_SIZE)
+c = Classifier("dota2Test.csv", "dota2Train.csv", ATTRIBUTE_COUNT, TRAINING_SIZE, TEST_SIZE)
 # Batch Mode off
 c.classify(False)
 
